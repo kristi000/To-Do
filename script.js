@@ -3,25 +3,63 @@ let taskadd = document.getElementById("add");
 
 function addTask() {
   var inputValue = document.getElementById("taskInput").value;
-  tasks.push(inputValue);
+  tasks.push({
+    task: inputValue,
+    id: 1,
+  });
   taskInput.value = "";
 }
-console.log(tasks);
+
+const f = ["do home wordk", ""];
+const v = [
+  {
+    task: "do homeowrk",
+    id: 1,
+  },
+  {},
+  {},
+  {},
+];
 
 function showTasks() {
   var list = document.getElementById("list");
-  list.innerHTML = "kari ktu";
+  list.innerHTML = "";
   for (var i = 0; i < tasks.length; i++) {
+    const btnCont = document.createElement("div");
     var item = document.createElement("li");
-    item.innerHTML = tasks[i];
+    var button = document.createElement("button");
+    button.innerHTML = "Remove";
+    button.addEventListener("click", removeTask.bind(item));
+    var todoText = document.createElement("p");
+    const editButton = document.createElement("button");
+    editButton.innerHTML = "Edit";
+
+    todoText.innerHTML = tasks[i].task;
+    item.appendChild(todoText);
+    btnCont.appendChild(editButton);
+    btnCont.appendChild(button);
     list.appendChild(item);
-    setTimeout(function () {
-      item.classList.add("show");
-    }, 10);
+    item.appendChild(btnCont);
   }
 }
-taskadd.addEventListener("click", function () {
+taskadd.addEventListener("click", function (event) {
   addTask();
   showTasks();
+
+  event.preventDefault();
 });
-setTimeout(function () {}, 10);
+
+console.log(list.length);
+
+console.log(taskInput.value);
+
+function removeTask() {
+  var index = tasks.indexOf(this.innerHTML);
+  console.log();
+
+  tasks.splice(index, 1);
+  this.remove();
+
+  console.log(this);
+  // tasks = [];
+}
