@@ -30,9 +30,21 @@ function showTasks() {
     var button = document.createElement("button");
     button.innerHTML = "Remove";
     button.addEventListener("click", removeTask.bind(item));
-    var todoText = document.createElement("p");
+    var todoText = document.createElement("input");
+    todoText.setAttribute("type", "text");
+    todoText.setAttribute("value", tasks[i].task);
+    todoText.setAttribute("id", "todoText");
+    todoText.setAttribute("disabled", "true");
+
     const editButton = document.createElement("button");
     editButton.innerHTML = "Edit";
+    editButton.addEventListener("click", function () {
+      todoText.removeAttribute("disabled");
+      todoText.focus();
+      todoText.addEventListener("blur", function () {
+        todoText.setAttribute("disabled", "true");
+      });
+    });
 
     todoText.innerHTML = tasks[i].task;
     item.appendChild(todoText);
