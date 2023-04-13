@@ -1,77 +1,72 @@
-var tasks = [];
-let taskadd = document.getElementById("add");
+const form = document.querySelector("#task-form");
+const input = document.querySelector("#task-input");
+const list = document.querySelector("#tasks");
 
-function addTask() {
-  var inputValue = document.getElementById("taskInput").value;
-  tasks.push({
-    task: inputValue,
-    id: 1,
-  });
-  taskInput.value = "";
-}
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-const f = ["do home wordk", ""];
-const v = [
-  {
-    task: "do homeowrk",
-    id: 1,
-  },
-  {},
-  {},
-  {},
-];
-
-function showTasks() {
-  var list = document.getElementById("list");
-  list.innerHTML = "";
-  for (var i = 0; i < tasks.length; i++) {
-    const btnCont = document.createElement("div");
-    var item = document.createElement("li");
-    var button = document.createElement("button");
-    button.innerHTML = "Remove";
-    button.addEventListener("click", removeTask.bind(item));
-    var todoText = document.createElement("input");
-    todoText.setAttribute("type", "text");
-    todoText.setAttribute("value", tasks[i].task);
-    todoText.setAttribute("id", "todoText");
-    todoText.setAttribute("disabled", "true");
-
-    const editButton = document.createElement("button");
-    editButton.innerHTML = "Edit";
-    editButton.addEventListener("click", function () {
-      todoText.removeAttribute("disabled");
-      todoText.focus();
-      todoText.addEventListener("blur", function () {
-        todoText.setAttribute("disabled", "true");
-      });
-    });
-
-    todoText.innerHTML = tasks[i].task;
-    item.appendChild(todoText);
-    btnCont.appendChild(editButton);
-    btnCont.appendChild(button);
-    list.appendChild(item);
-    item.appendChild(btnCont);
+  const task = input.value;
+  if (!task) {
+    return;
   }
-}
-taskadd.addEventListener("click", function (event) {
-  addTask();
-  showTasks();
 
-  event.preventDefault();
+  const task_div = document.createElement("div");
+  task_div.classList.add("task");
+  list.appendChild(task_div);
+
+  const task_content_div = document.createElement("div");
+  task_content_div.classList.add("content");
+  task_div.appendChild(task_content_div);
+
+  const task_input = document.createElement("input");
+  task_input.classList.add("text");
+  task_input.type = "text";
+  task_input.value = task;
+  task_input.setAttribute("readonly", "readonly");
+  task_content_div.appendChild(task_input);
+
+  const task_actions_div = document.createElement("div");
+  task_actions_div.classList.add("actions");
+  task_div.appendChild(task_actions_div);
+
+  const task_edit_button = document.createElement("button");
+  task_edit_button.classList.add("Edit");
+  task_edit_button.innerHTML = "Edit";
+
+  const task_delete_button = document.createElement("button");
+  task_delete_button.classList.add("Delete");
+  task_delete_button.innerHTML = "Delete";
+
+  const task_completed_button = document.createElement("button");
+  task_completed_button.classList.add("Completed");
+  task_completed_button.innerHTML = "Completed";
+
+  task_actions_div.appendChild(task_edit_button);
+  task_actions_div.appendChild(task_completed_button);
+  task_actions_div.appendChild(task_delete_button);
+
+  task_edit_button.addEventListener("click", () => {
+    if (task_edit_button.innerText.toLowerCase() == "edit") {
+      task_input.removeAttribute("readonly");
+      task_input.focus();
+      task_edit_button.innerText = "Save";
+      task_input.style.textDecoration = "none";
+    } else {
+      task_input.setAttribute("readonly", "readonly");
+      task_edit_button.innerText = "Edit";
+    }
+  });
+
+  task_delete_button.addEventListener("click", () => {
+    if (confirm("Are you sure you want to delete this task?")) {
+      list.removeChild(task_div);
+    }
+  });
+
+  task_completed_button.addEventListener("click", () => {
+    task_input.style.textDecoration = "line-through";
+    task_input.setAttribute("readonly", "readonly");
+  });
+
+  input.value = "";
 });
-
-console.log(list.length);
-
-console.log(taskInput.value);
-
-function removeTask() {
-  var index = tasks.indexOf(this.innerHTML);
-  console.log();
-
-  tasks.splice(index, 1);
-  this.remove();
-
-  console.log(this);
-  // tasks = [];
-}
