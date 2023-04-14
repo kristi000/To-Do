@@ -43,5 +43,24 @@ form.addEventListener("submit", (e) => {
   task_actions.appendChild(delbtn)
   task_actions.appendChild(completebtn)
 
+  delbtn.addEventListener("click", () => {
+    task_div.remove()
+  })
+
+  editbtn.addEventListener("click", () => {
+    if (editbtn.innerHTML == "Edit") {
+      editbtn.innerHTML = "Save"
+      task_input.focus()
+      task_input.removeAttribute("readonly")
+    } else {
+      editbtn.innerHTML = "Edit"
+      task_input.setAttribute("readonly", "readonly")
+    }
+  })
+  completebtn.addEventListener("click", () => {
+    task_input.style.textDecoration = "line-through"
+    task_input.setAttribute("readonly", "readonly")
+  })
+
   input.value = ""
 })
